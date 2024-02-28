@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   image: String,
   bio: String,
-  loto: [
+  lotos: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Loto",
@@ -24,6 +24,6 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-const User = mongoose.model.User || mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;
