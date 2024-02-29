@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import Loto from "../models/Loto.model";
 import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
+import { UserButton } from "@clerk/nextjs";
 
 interface Params {
   text: string;
@@ -100,5 +101,43 @@ export async function fetchLotoById(id: string) {
     return loto;
   } catch (error: any) {
     throw new Error(`Error fetching loto: ${error.message}`);
+  }
+}
+
+export async function addCommentToLoto(
+  lotoId: string,
+  commentText: string,
+  UserId: string,
+  path: string
+) {
+  connectToDB();
+
+  try {
+    // find the original loto by its ID
+    const originalLoto = await Loto.findById(lotoId);
+
+    if (!originalLoto) {
+      throw new Error("Loto not found");
+    }
+
+    // create a new loto with the comment text
+    const commentLoto = new Loto({
+      text: commentText,
+      author: UserId,
+      parentId: lotoId,
+    });
+
+    // save the new loto
+    const savedCommentLoto = await commentLoto.save();
+
+    // update the original loto to include the new comment
+    originalLoto.children.push(savedCommentLoto._id);
+
+    // save the original loto
+    await originalLoto.save();
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Error adding comment to loto: ${error.message}`);
   }
 }

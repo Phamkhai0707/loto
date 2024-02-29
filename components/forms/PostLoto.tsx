@@ -20,18 +20,10 @@ import { createLoto } from "@/lib/actions/loto.action";
 // import { updateUser } from "@/lib/actions/user.actions";
 
 interface Props {
-  user: {
-    id: string;
-    objectId: string;
-    userName: string;
-    name: string;
-    bio: string;
-    image: string;
-  };
-  btnTitle: string;
+  userId: string;
 }
 
-function PostLoto({ userId }: { userId: string }) {
+function PostLoto({ userId }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 

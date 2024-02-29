@@ -1,23 +1,17 @@
 "use client";
 
 import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
-import { CommentValidation } from "@/lib/validations/loto";
-import { Input } from "../ui/input";
 import Image from "next/image";
-// import { createLoto } from "@/lib/actions/loto.action";
+import { useForm } from "react-hook-form";
+import { usePathname } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+
+import { CommentValidation } from "@/lib/validations/loto";
+import { addCommentToLoto } from "@/lib/actions/loto.action";
 
 interface Props {
   lotoId: string;
@@ -25,8 +19,7 @@ interface Props {
   currentUserId: string;
 }
 
-const Comment = ({ lotoId, currentUserImg, currentUserId }: Props) => {
-  const router = useRouter();
+function Comment({ lotoId, currentUserImg, currentUserId }: Props) {
   const pathname = usePathname();
 
   const form = useForm({
@@ -37,14 +30,14 @@ const Comment = ({ lotoId, currentUserImg, currentUserId }: Props) => {
   });
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-    // await createLoto({
-    //   text: values.loto,
-    //   author: userId,
-    //   communityId: null,
-    //   path: pathname,
-    // });
+    await addCommentToLoto(
+      lotoId,
+      values.loto,
+      JSON.parse(currentUserId),
+      pathname
+    );
 
-    router.push("/");
+    form.reset();
   };
 
   return (
@@ -58,7 +51,7 @@ const Comment = ({ lotoId, currentUserImg, currentUserId }: Props) => {
               <FormLabel>
                 <Image
                   src={currentUserImg}
-                  alt="Profile image"
+                  alt="current_user"
                   width={48}
                   height={48}
                   className="rounded-full object-cover"
@@ -67,12 +60,11 @@ const Comment = ({ lotoId, currentUserImg, currentUserId }: Props) => {
               <FormControl className="border-none bg-transparent">
                 <Input
                   type="text"
+                  {...field}
                   placeholder="Comment..."
                   className="no-focus text-light-1 outline-none"
-                  {...field}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -83,6 +75,6 @@ const Comment = ({ lotoId, currentUserImg, currentUserId }: Props) => {
       </form>
     </Form>
   );
-};
+}
 
 export default Comment;

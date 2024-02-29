@@ -45,13 +45,13 @@ export const sidebarLinks = [
 ];
 
 export const profileTabs = [
-  { value: "loto", label: "Loto", icon: IC_reply },
+  { value: "lotos", label: "Lotos", icon: IC_reply },
   { value: "replies", label: "Replies", icon: IC_members },
   { value: "tagged", label: "Tagged", icon: IC_tag },
 ];
 
 export const communityTabs = [
-  { value: "loto", label: "Loto", icon: IC_reply },
+  { value: "lotos", label: "Lotos", icon: IC_reply },
   { value: "members", label: "Members", icon: IC_members },
   { value: "requests", label: "Requests", icon: IC_request },
 ];
