@@ -52,7 +52,7 @@ const LotoCard = ({
                 src={author.image}
                 alt="Profile image"
                 fill
-                className="cursor-pointer rounded-full"
+                className="cursor-pointer rounded-full object-cover"
               />
             </Link>
 
